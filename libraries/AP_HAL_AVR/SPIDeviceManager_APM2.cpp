@@ -58,6 +58,15 @@ void APM2SPIDeviceManager::init(void* machtnichts) {
      * ubrr3 = 3 */
     _optflow_spi3 = new AVRSPI3DeviceDriver(optflow_cs, 3, 3);
     _optflow_spi3->init();
+
+
+    AVRDigitalSource* pok_cs = new AVRDigitalSource(_BV(7), PF);
+    /* pok sensor: divide clock by 8 to 2Mhz
+     * spcr gets bit SPR0, spsr gets bit SPI2X */
+    _pok_spi0 = new AVRSPI0DeviceDriver(pok_cs, _BV(SPR0)|_BV(CPOL)|_BV(CPHA), _BV(SPR0)|_BV(CPOL)|_BV(CPHA), _BV(SPI2X));
+    _pok_spi0->init();
+
+
 }
 
 AP_HAL::SPIDeviceDriver* APM2SPIDeviceManager::device(enum AP_HAL::SPIDevice d) 
@@ -73,6 +82,8 @@ AP_HAL::SPIDeviceDriver* APM2SPIDeviceManager::device(enum AP_HAL::SPIDevice d)
             return _optflow_spi0;
         case AP_HAL::SPIDevice_ADNS3080_SPI3:
             return _optflow_spi3;
+        case AP_HAL::SPIDevice_POK:
+                  return _pok_spi0;
         default:
             return NULL;
     };

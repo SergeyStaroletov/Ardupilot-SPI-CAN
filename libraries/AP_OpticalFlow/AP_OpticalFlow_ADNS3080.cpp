@@ -25,6 +25,7 @@
 
 extern const AP_HAL::HAL& hal;
 
+
 // Constructors ////////////////////////////////////////////////////////////////
 AP_OpticalFlow_ADNS3080::AP_OpticalFlow_ADNS3080()
 {

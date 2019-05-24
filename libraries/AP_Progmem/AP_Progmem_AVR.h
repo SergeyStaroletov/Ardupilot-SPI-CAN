@@ -17,11 +17,11 @@ typedef struct {
 
 #undef PSTR
 /* need to define prog_char in avr-gcc 4.7 */
-#if __AVR__ && __GNUC__ == 4 && __GNUC_MINOR__ > 6
+#if __AVR__ && __GNUC__ == 5 && __GNUC_MINOR__ > 0
 typedef char prog_char;
 #endif
 /* Need const type for progmem - new for avr-gcc 4.6 */
-#if __AVR__ && __GNUC__ == 4 && __GNUC_MINOR__ > 5
+#if __AVR__ && __GNUC__ == 5 && __GNUC_MINOR__ > 0
 #define PSTR(s) (__extension__({static const prog_char __c[] PROGMEM = (s); \
                                   (const prog_char_t *)&__c[0]; }))
 #else

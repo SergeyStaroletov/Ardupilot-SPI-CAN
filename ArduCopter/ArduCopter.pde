@@ -105,7 +105,7 @@
 #include <AP_GPS_Glitch.h>      // GPS glitch protection library
 #include <DataFlash.h>          // ArduPilot Mega Flash Memory Library
 #include <AP_ADC.h>             // ArduPilot Mega Analog to Digital Converter Library
-#include <AP_ADC_AnalogSource.h>
+#include <AP_ADC_AnalogSource.h> 
 #include <AP_Baro.h>
 #include <AP_Baro_Glitch.h>     // Baro glitch protection library
 #include <AP_Compass.h>         // ArduPilot Mega Magnetometer Library
@@ -905,6 +905,9 @@ void setup()
     StorageManager::set_layout_copter();
 
     init_ardupilot();
+
+    ReadPOK_Init();
+
 
     // initialise the main loop scheduler
     scheduler.init(&scheduler_tasks[0], sizeof(scheduler_tasks)/sizeof(scheduler_tasks[0]));
