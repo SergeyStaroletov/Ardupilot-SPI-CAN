@@ -42,8 +42,8 @@ void APM2SPIDeviceManager::init(void* machtnichts) {
     AVRDigitalSource* optflow_cs = new AVRDigitalSource(_BV(3), PF);
     /* optflow: divide clock by 8 to 2Mhz
      * spcr gets bit SPR0, spsr gets bit SPI2X */
-    _optflow_spi0 = new AVRSPI0DeviceDriver(optflow_cs, _BV(SPR0)|_BV(CPOL)|_BV(CPHA), _BV(SPR0)|_BV(CPOL)|_BV(CPHA), _BV(SPI2X));
-    _optflow_spi0->init();
+   // _optflow_spi0 = new AVRSPI0DeviceDriver(optflow_cs, _BV(SPR0)|_BV(CPOL)|_BV(CPHA), _BV(SPR0)|_BV(CPOL)|_BV(CPHA), _BV(SPI2X));
+   // _optflow_spi0->init();
 
     /* Dataflash CS is on Arduino pin 28, PORTA6 */
     AVRDigitalSource* df_cs = new AVRDigitalSource(_BV(6), PA);
@@ -56,14 +56,14 @@ void APM2SPIDeviceManager::init(void* machtnichts) {
     /* optflow uses mode 3 and a clock of 2mhz
      * ucsr3c = _BV(UCPHA3N)|_BV(UCPOL3) = 3
      * ubrr3 = 3 */
-    _optflow_spi3 = new AVRSPI3DeviceDriver(optflow_cs, 3, 3);
-    _optflow_spi3->init();
+   // _optflow_spi3 = new AVRSPI3DeviceDriver(optflow_cs, 3, 3);
+   // _optflow_spi3->init();
 
 
     AVRDigitalSource* pok_cs = new AVRDigitalSource(_BV(7), PF);
     /* pok sensor: divide clock by 8 to 2Mhz
      * spcr gets bit SPR0, spsr gets bit SPI2X */
-    _pok_spi0 = new AVRSPI0DeviceDriver(pok_cs, _BV(SPR0)|_BV(CPOL)|_BV(CPHA), _BV(SPR0)|_BV(CPOL)|_BV(CPHA), _BV(SPI2X));
+    _pok_spi0 = new AVRSPI0DeviceDriver(optflow_cs, _BV(SPR0)|_BV(CPOL)|_BV(CPHA), _BV(SPR0)|_BV(CPOL)|_BV(CPHA), _BV(SPI2X));
     _pok_spi0->init();
 
 

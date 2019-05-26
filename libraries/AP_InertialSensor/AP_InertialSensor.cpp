@@ -360,7 +360,7 @@ AP_InertialSensor::_detect_backends(void)
     if (_backend_count == 0 ||
         _gyro_count == 0 ||
         _accel_count == 0) {
-        hal.scheduler->panic(PSTR("No INS backends available"));
+        //hal.scheduler->panic(PSTR("No INS backends available"));
     }
 
     // set the product ID to the ID of the first backend

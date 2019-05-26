@@ -216,9 +216,6 @@ static void ReadPOK_Update(void)
 
     _timer = tnow;
 
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    //   Sart - Read the RPM
-    /////////////////////////////////////////////////////////////////////////////////////////////
 
     // get spi bus semaphore
     _spi_sem_rpm = _spi_pok->get_semaphore();
@@ -231,6 +228,19 @@ static void ReadPOK_Update(void)
 
     _spi_pok->cs_assert();
 
+    _spi_pok->transfer('H');
+    _spi_pok->transfer('e');
+    _spi_pok->transfer('l');
+    _spi_pok->transfer('l');
+    _spi_pok->transfer('o');
+    _spi_pok->transfer('/n');
+
+
+
+
+
+
+    /*
     //First, send the length to be sent data :
     _spi_pok->transfer(0x2); // Length
     hal.scheduler->delay_microseconds(SPI_FIRST_TRANSACTION_DELAY);
@@ -256,16 +266,13 @@ static void ReadPOK_Update(void)
       _spi_pok->transfer(ACK);
     }
 
+	*/
     // release slave select
     _spi_pok->cs_release();
 
 
     // release the spi bus
     _spi_sem_rpm->give();
-
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    //   End - Read the RPM
-    /////////////////////////////////////////////////////////////////////////////////////////////
 
     return;
 
@@ -287,7 +294,7 @@ static void ReadPOK_Init(void)
     AP_HAL::Semaphore* _spi_sem_rpm;
     uint8_t resp, read_len;
     int i;
-    char hello[] = "hello, world\n";
+    char hello[] = "Hello, world\n";
 
     _spi_pok = hal.spi->device(AP_HAL::SPIDevice_POK);
     if (_spi_pok == NULL)
@@ -300,96 +307,7 @@ static void ReadPOK_Init(void)
     // (2MHz on APM2)
     _spi_pok->set_bus_speed(AP_HAL::SPIDeviceDriver::SPI_SPEED_HIGH);
 
-    for(i = 0; i < 100; i++)
-    {
-        /////////////////////////////////////////////////////////////////////////////////////////////
-        //   Sart - Check the SPI device version
-        /////////////////////////////////////////////////////////////////////////////////////////////
-
-        hal.scheduler->suspend_timer_procs();
-
-        // get spi bus semaphore
-        _spi_sem_rpm = _spi_pok->get_semaphore();
-
-        if (_spi_sem_rpm == NULL)
-        {
-            cliSerial->println_P(PSTR("ReadPOK_Init() failed - sem error "));
-            goto error_continue;
-        }
-
-        if (!_spi_sem_rpm->take(100))
-            hal.scheduler->panic(PSTR("ReadRPM_Init: Unable to get semaphore"));
-
-        _spi_pok->cs_assert();
-
-        //Send hello injection!!
-
-        for (int h = 0; h < sizeof(hello); h++) {
-        	_spi_pok->transfer(hello[h]);
-        }
-
-
-        //First, send the length to be sent data :
-        _spi_pok->transfer(0x2); // length
-        hal.scheduler->delay_microseconds(SPI_FIRST_TRANSACTION_DELAY);
-
-        // second, send the cmd ID
-        resp = _spi_pok->transfer(SPI_CMD_RPM_VERSION);
-
-        //Check whether resp is ACK or not.
-        if(resp != ACK)
-        {
-            // release slave select
-            _spi_pok->cs_release();
-
-            // release the spi bus
-            _spi_sem_rpm->give();
-
-            cliSerial->println_P(PSTR("ReadPOK_Init() failed - spi Nak"));
-            goto error_continue;
-        }
-
-        hal.scheduler->delay_microseconds(SPI_TRANSACTION_DELAY);
-
-        //Third, Read  the lengh which we should read.
-        read_len = _spi_pok->transfer(ACK);
-
-        for(uint8_t i = 0; i < read_len; i++)
-        {
-          hal.scheduler->delay_microseconds(SPI_TRANSACTION_DELAY);
-          spi_rpm_version[i] = _spi_pok->transfer(ACK);
-        }
-
-        // release slave select
-        _spi_pok->cs_release();
-
-
-        // release the spi bus
-        _spi_sem_rpm->give();
-
-        hal.scheduler->resume_timer_procs();
-
-        if(strcmp((const char *)spi_rpm_version, version) == 0)
-        {
-            cliSerial->printf_P(PSTR("\nReadPOK_Init() - version= %s \n"), (uint8_t *)spi_rpm_version);
-            break;
-        }
-        else
-        {
-            cliSerial->printf_P(PSTR("\nReadRPM_Init() - version= read failed \n"));
-        }
-        /////////////////////////////////////////////////////////////////////////////////////////////
-        //   End - Check the SPI device version
-        /////////////////////////////////////////////////////////////////////////////////////////////
-
-        error_continue:
-            hal.scheduler->resume_timer_procs();
-
-            hal.scheduler->delay(200);
-    }
-
-    if(i != 3)
-        hal.scheduler->register_timer_process((AP_HAL::MemberProc)&ReadPOK_Update);
+    hal.scheduler->register_timer_process((AP_HAL::MemberProc)&ReadPOK_Update);
 
     return;
 }
