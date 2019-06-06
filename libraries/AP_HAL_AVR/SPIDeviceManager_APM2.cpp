@@ -39,7 +39,7 @@ void APM2SPIDeviceManager::init(void* machtnichts) {
     _ms5611->init();
    
     /* optflow cs is on Arduino pin A3, PORTF3 */
-    AVRDigitalSource* optflow_cs = new AVRDigitalSource(_BV(3), PF);
+    //AVRDigitalSource* optflow_cs = new AVRDigitalSource(_BV(3), PF);
     /* optflow: divide clock by 8 to 2Mhz
      * spcr gets bit SPR0, spsr gets bit SPI2X */
    // _optflow_spi0 = new AVRSPI0DeviceDriver(optflow_cs, _BV(SPR0)|_BV(CPOL)|_BV(CPHA), _BV(SPR0)|_BV(CPOL)|_BV(CPHA), _BV(SPI2X));
@@ -60,9 +60,10 @@ void APM2SPIDeviceManager::init(void* machtnichts) {
    // _optflow_spi3->init();
 
 
-    AVRDigitalSource* pok_cs = new AVRDigitalSource(_BV(7), PF);
+    //AVRDigitalSource* pok_cs = new AVRDigitalSource(_BV(7), PF);
     /* pok sensor: divide clock by 8 to 2Mhz
      * spcr gets bit SPR0, spsr gets bit SPI2X */
+    AVRDigitalSource* optflow_cs = new AVRDigitalSource(_BV(3), PF);
     _pok_spi0 = new AVRSPI0DeviceDriver(optflow_cs, _BV(SPR0)|_BV(CPOL)|_BV(CPHA), _BV(SPR0)|_BV(CPOL)|_BV(CPHA), _BV(SPI2X));
     _pok_spi0->init();
 
@@ -83,7 +84,7 @@ AP_HAL::SPIDeviceDriver* APM2SPIDeviceManager::device(enum AP_HAL::SPIDevice d)
         case AP_HAL::SPIDevice_ADNS3080_SPI3:
             return _optflow_spi3;
         case AP_HAL::SPIDevice_POK:
-                  return _pok_spi0;
+            return _pok_spi0;
         default:
             return NULL;
     };

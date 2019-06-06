@@ -16,6 +16,9 @@ public:
     void cs_release();
     uint8_t transfer (uint8_t data);
     void transfer (const uint8_t *data, uint16_t len);
+    void just_transfer (const uint8_t data) {}
+    uint8_t just_receive () {return 0;}
+
 private:
     EmptySemaphore _semaphore;
 };

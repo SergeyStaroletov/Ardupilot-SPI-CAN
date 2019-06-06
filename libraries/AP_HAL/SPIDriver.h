@@ -27,6 +27,11 @@ public:
     virtual uint8_t transfer (uint8_t data) = 0;
     virtual void transfer (const uint8_t *data, uint16_t len) = 0;
 
+    //addition
+    virtual void just_transfer (const uint8_t data) = 0;
+    virtual uint8_t just_receive () = 0;
+
+
     /**
        optional set_bus_speed() interface. This can be used by drivers
        to request higher speed for sensor registers once the sensor is

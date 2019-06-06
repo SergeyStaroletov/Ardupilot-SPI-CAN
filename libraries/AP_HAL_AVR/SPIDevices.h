@@ -29,6 +29,10 @@ public:
     void cs_release();
     uint8_t transfer(uint8_t data);
     void transfer(const uint8_t *data, uint16_t len);
+    //addition
+    void just_transfer (const uint8_t data);
+    uint8_t just_receive ();
+
     void set_bus_speed(enum bus_speed speed);
 
 private:
@@ -70,6 +74,9 @@ public:
     void cs_release();
     uint8_t transfer(uint8_t data);
     void transfer(const uint8_t *data, uint16_t len);
+    //addition
+    void just_transfer (const uint8_t data) {}
+    uint8_t just_receive () {return 0;}
 
 private:
     void _cs_assert();
@@ -106,6 +113,9 @@ public:
     void cs_release();
     uint8_t transfer(uint8_t data);
     void transfer(const uint8_t *data, uint16_t len);
+    //addition
+    void just_transfer (const uint8_t data) {}
+    uint8_t just_receive () {return 0;}
 
 private:
     void _cs_assert();

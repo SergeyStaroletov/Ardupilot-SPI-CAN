@@ -40,6 +40,7 @@ void AVRAnalogIn::_register_channel(ADCSource* ch) {
             hal.console->print_P(PSTR(
                 "Error: AP_HAL_AVR::AVRAnalogIn out of channels\r\n"));
             hal.scheduler->delay(1000);
+            //todo: check why is it possible to be here
         }
     }
     _channels[_num_channels] = ch;

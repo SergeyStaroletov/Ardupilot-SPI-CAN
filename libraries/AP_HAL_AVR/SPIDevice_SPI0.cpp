@@ -59,6 +59,33 @@ void AVRSPI0DeviceDriver::_cs_release()
     _cs_pin->write(1);
 }
 
+//addition
+void AVRSPI0DeviceDriver::just_transfer (const uint8_t data)
+{
+    if (spi0_transferflag) {
+        hal.scheduler->panic(PSTR("PANIC: SPI0 transfer collision"));
+    }
+    spi0_transferflag = true;
+    SPDR = data;
+    if (SPSR & _BV(WCOL)) {
+        hal.scheduler->panic(PSTR("PANIC: SPI0 write collision"));
+    }
+    spi0_transferflag = false;
+}
+
+uint8_t AVRSPI0DeviceDriver::just_receive ()
+{
+    if (spi0_transferflag) {
+        hal.scheduler->panic(PSTR("PANIC: SPI0 transfer collision"));
+    }
+    spi0_transferflag = true;
+    while(!(SPSR & _BV(SPIF)));
+    uint8_t read_spdr = SPDR;
+    spi0_transferflag = false;
+    return read_spdr;
+}
+
+
 uint8_t AVRSPI0DeviceDriver::_transfer(uint8_t data) 
 {
     if (spi0_transferflag) {
