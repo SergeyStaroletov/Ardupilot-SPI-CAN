@@ -1,4 +1,11 @@
-# ArduPilot Project
+# ArduPilot Project, only APM 2.6 branch
+
+Forked from https://github.com/ArduPilot/ardupilot/tree/ArduCopter-3.2.1 
+
+
+
+
+# Original info
 
 You can find lots of development information at the [ArduPilot development site](http://dev.ardupilot.com)
 
