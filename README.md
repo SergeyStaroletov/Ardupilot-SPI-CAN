@@ -2,7 +2,7 @@
 
 Forked from https://github.com/ArduPilot/ardupilot/tree/ArduCopter-3.2.1 
 
-
+<a href="https://www.youtube.com/watch?v=fDDmdEM6B0M"> Video demo of SPI transfer </a>
 
 
 # Original info
